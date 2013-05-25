@@ -15,31 +15,37 @@
     You should have received a copy of the GNU General Public License
 */
 
-var newscript = document.createElement('script');
-newscript.type = 'text/javascript';
-newscript.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js';
-document.getElementsByTagName('body')[0].appendChild(newscript);
-newscript.onload = function() {
-  function getText(selector) {
-    if ($(selector)) {
-      return $(selector).text().strip();
-    }
-    return null;
+(function() {
+  function getAddress() {
+      var a = document.querySelector('address').querySelector('span');
+      var res = [];
+      for (var i=0; i < a.length; i++) { 
+          res.push(a[i].innerHTML); 
+          console.log(res);
+      }
+      return res.join(" ");
   }
-  var addr          = getText('address');
+  function getText(selector) {
+    var node = document.querySelector(selector);
+    if (node) {
+      return node.textContent;
+    }
+    return '';
+  }
+  var addr          = getAddress();
   var phone         = getText('span[itemprop=telephone]');
   var url           = getText('#bizUrl a');
-  var name          = getText('h1[itemprop=name]');
+  var name          = getText('h1[itemprop=name]').strip();
   var businessHours = getText('dd.attr-BusinessHours');
 
   var baseUrl = 'http://www.google.com/calendar/event?action=TEMPLATE';
   var parts = {
       'text': name,
       'location': addr,
+      'sprop': '',
     };
   if (url) {
-    if (parts['sprop']) parts['sprop'] += ';';
-    parts['sprop'] += 'website' + ":" + url;
+    parts['sprop'] = 'website' + ":" + url;
   }
   parts['details'] = '';
   if (phone) {
@@ -48,9 +54,8 @@ newscript.onload = function() {
   if (businessHours) {
     parts['details'] += "Business Hours \n" + businessHours + "\n";
   }
-
   for (var key in parts) {
     baseUrl += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(parts[key]);
   }
   window.location = baseUrl;
-}
+})();
