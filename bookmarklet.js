@@ -26,23 +26,17 @@ newscript.onload = function() {
     }
     return null;
   }
-
-  var addr = getText('address');
-  var phone = getText('span[itemprop=telephone]');
-  var url = getText('#bizUrl a');
-  var name = getText('h1[itemprop=name]');
+  var addr          = getText('address');
+  var phone         = getText('span[itemprop=telephone]');
+  var url           = getText('#bizUrl a');
+  var name          = getText('h1[itemprop=name]');
   var businessHours = getText('dd.attr-BusinessHours');
 
-  console.log("Name = " + name);
-  console.log("Address = " + addr);
-  console.log("Phones = " + phone);
-  console.log("URLs = " + url);
-  console.log("Business hours " + businessHours);
-
   var baseUrl = 'http://www.google.com/calendar/event?action=TEMPLATE';
-  var parts = {'text': name,
-               'location': addr,
-               }
+  var parts = {
+      'text': name,
+      'location': addr,
+    };
   if (url) {
     if (parts['sprop']) parts['sprop'] += ';';
     parts['sprop'] += 'website' + ":" + url;
@@ -58,6 +52,5 @@ newscript.onload = function() {
   for (var key in parts) {
     baseUrl += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(parts[key]);
   }
-  console.log(baseUrl);
   window.location = baseUrl;
 }
