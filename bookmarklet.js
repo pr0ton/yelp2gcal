@@ -17,13 +17,12 @@
 
 (function() {
   function getAddress() {
-      var a = document.querySelector('address').querySelector('span');
+      var a = document.querySelector('address').querySelectorAll('span');
       var res = [];
       for (var i=0; i < a.length; i++) { 
-          res.push(a[i].innerHTML); 
-          console.log(res);
+          res.push(a[i].textContent.strip());
       }
-      return res.join(" ");
+      return res.join(", ");
   }
   function getText(selector) {
     var node = document.querySelector(selector);
