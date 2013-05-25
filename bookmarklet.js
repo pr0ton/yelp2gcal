@@ -27,7 +27,7 @@
   function getText(selector) {
     var node = document.querySelector(selector);
     if (node) {
-      return node.textContent;
+      return node.textContent.strip();
     }
     return '';
   }
