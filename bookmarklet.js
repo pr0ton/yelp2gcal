@@ -17,47 +17,47 @@
 
 var newscript = document.createElement('script');
 newscript.type = 'text/javascript';
-newscript.async = false;
 newscript.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js';
 document.getElementsByTagName('body')[0].appendChild(newscript);
-
-function getText(selector) {
-  if ($(selector)) {
-    return $(selector).text().strip();
+newscript.onload = function() {
+  function getText(selector) {
+    if ($(selector)) {
+      return $(selector).text().strip();
+    }
+    return null;
   }
-  return null;
-}
 
-var addr = getText($('address'));
-var phone = getText($('span[itemprop=telephone]'));
-var url = getText($('#bizUrl a'));
-var name = getText($('h1[itemprop=name]'));
-var businessHours = getText($('dd.attr-BusinessHours'));
+  var addr = getText('address');
+  var phone = getText('span[itemprop=telephone]');
+  var url = getText('#bizUrl a');
+  var name = getText('h1[itemprop=name]');
+  var businessHours = getText('dd.attr-BusinessHours');
 
-// console.log("Name = " + name);
-// console.log("Address = " + addr);
-// console.log("Phones = " + phone);
-// console.log("URLs = " + url);
-// console.log("Business hours " + businessHours);
+  console.log("Name = " + name);
+  console.log("Address = " + addr);
+  console.log("Phones = " + phone);
+  console.log("URLs = " + url);
+  console.log("Business hours " + businessHours);
 
-var baseUrl = 'http://www.google.com/calendar/event?action=TEMPLATE';
-var parts = {'text': name,
-             'location': addr,
-             }
-if (url) {
-  if (parts['sprop']) parts['sprop'] += ';';
-  parts['sprop'] += 'website' + ":" + url;
-}
-parts['details'] = '';
-if (phone) {
-  parts['details'] = "Phone number: " + phone;
-}
-if (businessHours) {
-  parts['details'] += "Business Hours \n" + businessHours;
-}
+  var baseUrl = 'http://www.google.com/calendar/event?action=TEMPLATE';
+  var parts = {'text': name,
+               'location': addr,
+               }
+  if (url) {
+    if (parts['sprop']) parts['sprop'] += ';';
+    parts['sprop'] += 'website' + ":" + url;
+  }
+  parts['details'] = '';
+  if (phone) {
+    parts['details'] = "Phone number: " + phone + "\n";
+  }
+  if (businessHours) {
+    parts['details'] += "Business Hours \n" + businessHours + "\n";
+  }
 
-for (var key in parts) {
-  baseUrl += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(parts[key]);
+  for (var key in parts) {
+    baseUrl += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(parts[key]);
+  }
+  console.log(baseUrl);
+  window.location = baseUrl;
 }
-
-window.location = baseUrl;
