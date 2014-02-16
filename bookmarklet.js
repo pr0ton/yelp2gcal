@@ -16,25 +16,30 @@
 */
 
 (function() {
+  
+  function strip(s) {
+    var res = String(s).replace(/^\s+|\s+$/g, '');
+    return res.split("\n").join(" ");
+  };
   function getAddress() {
       var a = document.querySelector('address').querySelectorAll('span');
       var res = [];
       for (var i=0; i < a.length; i++) { 
-          res.push(a[i].textContent.strip());
+          res.push(strip(a[i].innerText));
       }
       return res.join(", ");
   }
   function getText(selector) {
     var node = document.querySelector(selector);
     if (node) {
-      return node.textContent.strip();
+      return strip(node.innerText);
     }
     return '';
   }
   var addr          = getAddress();
   var phone         = getText('span[itemprop=telephone]');
   var url           = getText('#bizUrl a');
-  var name          = getText('h1[itemprop=name]').strip();
+  var name          = strip(getText('h1[itemprop=name]'));
   var businessHours = getText('dd.attr-BusinessHours');
 
   var baseUrl = 'http://www.google.com/calendar/event?action=TEMPLATE';
